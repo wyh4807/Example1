@@ -12,6 +12,8 @@
 			<a href="Board/${list.board_IDX}">${list.board_IDX}</a>
 			<a href="Board/${list.board_IDX}">${list.board_TITLE}</a>
 		</p>
+		
+		
 	</c:forEach>
 </body>
 </html>

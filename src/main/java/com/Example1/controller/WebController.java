@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.Example1.mapper.BoardMapper;
 import com.Example1.model.BoardModel;
@@ -42,15 +43,16 @@ public class WebController {
 		return "post";
 	}
 	
-	@PostMapping("/Board/{board_IDX}")
+	@PostMapping("/Board/")
 	public String postWrite(Model model) {
-		return "index";
+		return "/Board/{board_IDX}";
 	}
 	
 	@DeleteMapping("/Board/{board_IDX}")
-	public String postDelete(Model model,
-			@PathVariable(required = true, value = "board_IDX") Integer boardIndex) {
-		return "index";
+	public @ResponseBody Boolean postDelete(Model model,
+			@PathVariable(required = true, value = "board_IDX") Integer board_IDX) {
+		Boolean board_DLT = boardMapper.postDelete(board_IDX);
+		return board_DLT;
 	}
 
 }

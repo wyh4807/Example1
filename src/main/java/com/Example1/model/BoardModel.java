@@ -16,7 +16,7 @@ public class BoardModel {
     Integer board_IDX;
     
     @Column(length = 1, nullable = false)
-    String board_DLT;
+    Boolean board_DLT;
     
     @Column(length = 30, nullable = false)
     String board_PWD;
