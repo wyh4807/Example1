@@ -13,7 +13,7 @@ import lombok.Data;
 public class BoardModel {
     @Id
     @Column(length = 10, nullable = false)
-    String board_IDX;
+    Integer board_IDX;
     
     @Column(length = 1, nullable = false)
     String board_DLT;

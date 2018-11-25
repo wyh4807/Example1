@@ -7,11 +7,13 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<c:forEach var="list" items="${boardModel}">
 		<p>
-			<a href="Board/${list.board_IDX}">${list.board_IDX}</a>
-			<a href="Board/${list.board_IDX}">${list.board_TITLE}</a>
+			<a href="Board/${boardModel.board_IDX}">${boardModel.board_IDX}</a>
+			<a href="Board/${boardModel.board_IDX}">${boardModel.board_TITLE}</a>
 		</p>
-	</c:forEach>
+		<pre>${boardModel.board_CONTENT}</pre>
+		
+		<a href="/">목록으로</a>
+		<a href="${boardModel.board_IDX}">수정</a>
 </body>
 </html>
