@@ -82,20 +82,31 @@
 	            	<li class="page-item"><a class="page-link" href="/?page=${prevUrl}"><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
 	            </c:otherwise>
 	        </c:choose>
-			<c:forEach var="i" begin="${begin}" end="${end}">
-				<c:url var="pageUrl" value="${i}" />
-	            <c:choose>
-	                <c:when test="${i == current}">
-	                    <li class="page-item active"><a class="page-link" href="#"><c:out value="${i}" /></a></li>
-	                </c:when>
-	                <c:otherwise>
-	                	<li class="page-item"><a class="page-link" href="/?page=${pageUrl}"><c:out value="${i}" /></a></li>
-	                </c:otherwise>
-	            </c:choose>
-			</c:forEach>
+	        
+	        <c:choose>
+		        <c:when test="${end == 0}">
+		        	<li class="page-item active"><a class="page-link" href="#"><c:out value="1" /></a></li>
+		        </c:when>
+		        
+		        <c:otherwise>
+		        	<c:forEach var="i" begin="${begin}" end="${end}">
+						<c:url var="pageUrl" value="${i}" />
+			            <c:choose>
+			                <c:when test="${i == current}">
+			                    <li class="page-item active"><a class="page-link" href="#"><c:out value="${i}" /></a></li>
+			                </c:when>
+			                <c:otherwise>
+			                	<li class="page-item"><a class="page-link" href="/?page=${pageUrl}"><c:out value="${i}" /></a></li>
+			                </c:otherwise>
+			            </c:choose>
+					</c:forEach>
+		        </c:otherwise>
+	        </c:choose>
+	        
+			
 			
 			<c:choose>
-	            <c:when test="${current == lastUrl}">
+	            <c:when test="${current == lastUrl || current == 1}">
 	            	<li class="page-item disabled"><a class="page-link" href="#"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
 	            	<li class="page-item disabled"><a class="page-link" href="#"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a></li>
 	            </c:when>
@@ -123,8 +134,8 @@
 			});
 
 			$('.delete').on('click', function() {
-				var idx = $(".delete").index(this);
-				idx = $('.idx').eq(idx).text();
+				var idx = $(".delete").index(this) + 1;
+				var text = $('.idx').eq(idx).text();
 				var url = '/Board/' + idx;
 				$.ajax({
 					url : url,

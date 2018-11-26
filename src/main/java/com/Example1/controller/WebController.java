@@ -43,16 +43,17 @@ public class WebController implements ErrorController{
 	
 	@RequestMapping("/")
 	public String index(Pageable pageable, Model model){
-		Page<BoardModel> page = boardServiceImpl.getAllBoardModel(pageable);
-		
+		Page<BoardModel> page = boardServiceImpl.findAll(pageable);
 		int current = page.getNumber() + 1;
-		logger.info("current" + String.valueOf(current));
 	    int begin = Math.max(1, current - 5);
 	    int end = Math.min(begin + 10, page.getTotalPages());
+	    
 		model.addAttribute("current", current);
 		model.addAttribute("begin", begin);
 		model.addAttribute("end", end);
 		model.addAttribute("page", page);
+		
+		logger.info(page.toString());
 		return "index";
 	}
 	

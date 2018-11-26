@@ -16,7 +16,8 @@ public class BoardServiceImpl implements BoardService {
 	BoardRepository boardRepository;
 	
 	@Override
-	public Page<BoardModel> getAllBoardModel(Pageable page) {
+	public Page<BoardModel> findAll(Pageable page) {
+		boardRepository.flush();
 		return boardRepository.findAll(page);
 	}
 

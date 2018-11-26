@@ -8,5 +8,6 @@ import com.Example1.model.BoardModel;
 
 @Service
 public interface BoardService {
-	Page<BoardModel> getAllBoardModel(Pageable page);
+
+	Page<BoardModel> findAll(Pageable page);
 }
