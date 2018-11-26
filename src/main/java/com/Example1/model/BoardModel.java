@@ -5,25 +5,31 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "board")
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class BoardModel {
     @Id
     @Column(length = 10, nullable = false)
-    Integer board_IDX;
+    private Integer board_IDX;
     
     @Column(length = 1, nullable = false)
-    Boolean board_DLT;
+    private Boolean board_DLT;
     
     @Column(length = 30, nullable = false)
-    String board_PWD;
+    private String board_PWD;
     
     @Column(length = 30, nullable = false)
-    String board_TITLE;
+    private String board_TITLE;
     
     @Column(nullable = false)
-    String board_CONTENT;
+    private String board_CONTENT;
 }
