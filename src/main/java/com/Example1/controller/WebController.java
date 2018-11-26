@@ -46,7 +46,8 @@ public class WebController implements ErrorController{
 		Page<BoardModel> page = boardServiceImpl.getAllBoardModel(pageable);
 		List<BoardModel> boardModel = boardMapper.boardList();
 		
-		int current = page.getNumber();
+		int current = page.getNumber() + 1;
+		logger.info("current" + String.valueOf(current));
 	    int begin = Math.max(1, current - 5);
 	    int end = Math.min(begin + 10, page.getTotalPages());
 		

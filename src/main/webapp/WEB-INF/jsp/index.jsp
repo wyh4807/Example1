@@ -100,8 +100,8 @@
 	            	<li class="page-item disabled"><a class="page-link" href="#"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a></li>
 	            </c:when>
 	            <c:otherwise>
-	            	<li class="page-item disabled"><a class="page-link" href="/?page=${nextUrl}"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
-	            	<li class="page-item disabled"><a class="page-link" href="/?page=${lastUrl}"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a></li>
+	            	<li class="page-item"><a class="page-link" href="/?page=${nextUrl}"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+	            	<li class="page-item"><a class="page-link" href="/?page=${lastUrl}"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a></li>
 	            </c:otherwise>
 	        </c:choose>
 		</ul>
