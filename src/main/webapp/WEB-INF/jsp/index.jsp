@@ -1,5 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<c:url var="firstUrl" value="1" />
+<c:url var="lastUrl" value="${page.totalPages}" />
+<c:url var="prevUrl" value="${current - 1}" />
+<c:url var="nextUrl" value="${current + 1}" />
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,15 +44,21 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach var="list" items="${boardModel}">
+					<c:forEach var="list" items="${page.content}">
 						<tr class="d-flex">
 							<th class="col-sm-1"><input type="checkbox" class="checkthis" /></th>
 							<td class="text-center col-sm-2"><a href="/Board/${list.board_IDX}" class="idx">${list.board_IDX}</a></td>
 							<td class="col-sm-7"><a href="/Board/${list.board_IDX}">${list.board_TITLE}</a></td>
-							<td class="col-sm-1"><a href="/Board/${list.board_IDX}" class="btn btn-outline-primary" title="게시글 수정"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
-							<td class="col-sm-1"><button type="button" class="btn btn-outline-danger delete" title="게시글 삭제">
+							<td class="col-sm-1">
+								<a href="/Board/${list.board_IDX}" class="btn btn-outline-primary" title="게시글 수정">
+									<i class="fa fa-pencil" aria-hidden="true"></i>
+								</a>
+							</td>
+							<td class="col-sm-1">
+								<button type="button" class="btn btn-outline-danger delete" title="게시글 삭제">
 									<i class="fa fa-trash-o" aria-hidden="true"></i>
-								</button></td>
+								</button>
+							</td>
 						</tr>
 					</c:forEach>
 				</tbody>
@@ -59,11 +71,39 @@
 		</div>
 
 		<ul class="pagination justify-content-center">
-			<li class="page-item"><a class="page-link" href="#"><i class="fa fa-chevron-left" aria-hidden="true"></i></a></li>
-			<li class="page-item"><a class="page-link" href="#">1</a></li>
-			<li class="page-item"><a class="page-link" href="#">2</a></li>
-			<li class="page-item"><a class="page-link" href="#">3</a></li>
-			<li class="page-item"><a class="page-link" href="#"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+			<c:choose>
+	            <c:when test="${current == 1}">
+	            	<li class="page-item disabled"><a class="page-link" href="#"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a></li>
+	            	<li class="page-item disabled"><a class="page-link" href="#"><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
+	            </c:when>
+	            
+	            <c:otherwise>
+	            	<li class="page-item"><a class="page-link" href="/?page=${firstUrl}"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a></li>
+	            	<li class="page-item"><a class="page-link" href="/?page=${prevUrl}"><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
+	            </c:otherwise>
+	        </c:choose>
+			<c:forEach var="i" begin="${begin}" end="${end}">
+				<c:url var="pageUrl" value="${i}" />
+	            <c:choose>
+	                <c:when test="${i == current}">
+	                    <li class="page-item active"><a class="page-link" href="#"><c:out value="${i}" /></a></li>
+	                </c:when>
+	                <c:otherwise>
+	                	<li class="page-item"><a class="page-link" href="/?page=${pageUrl}"><c:out value="${i}" /></a></li>
+	                </c:otherwise>
+	            </c:choose>
+			</c:forEach>
+			
+			<c:choose>
+	            <c:when test="${current == lastUrl}">
+	            	<li class="page-item disabled"><a class="page-link" href="#"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+	            	<li class="page-item disabled"><a class="page-link" href="#"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a></li>
+	            </c:when>
+	            <c:otherwise>
+	            	<li class="page-item disabled"><a class="page-link" href="/?page=${nextUrl}"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+	            	<li class="page-item disabled"><a class="page-link" href="/?page=${lastUrl}"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a></li>
+	            </c:otherwise>
+	        </c:choose>
 		</ul>
 	</div>
 

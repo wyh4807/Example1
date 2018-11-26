@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +28,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.Example1.mapper.BoardMapper;
 import com.Example1.model.BoardModel;
+import com.Example1.service.impl.BoardServiceImpl;
 
 @Controller
 public class WebController implements ErrorController{
@@ -35,13 +38,24 @@ public class WebController implements ErrorController{
 	@Autowired
 	BoardMapper boardMapper;
 	
+	@Autowired
+	BoardServiceImpl boardServiceImpl;
 	
 	@RequestMapping("/")
-	public String index(Model model){
+	public String index(Pageable pageable, Model model){
+		Page<BoardModel> page = boardServiceImpl.getAllBoardModel(pageable);
 		List<BoardModel> boardModel = boardMapper.boardList();
 		
-		model.addAttribute("boardModel", boardModel);
+		int current = page.getNumber();
+	    int begin = Math.max(1, current - 5);
+	    int end = Math.min(begin + 10, page.getTotalPages());
 		
+		
+		model.addAttribute("boardModel", boardModel);
+		model.addAttribute("current", current);
+		model.addAttribute("begin", begin);
+		model.addAttribute("end", end);
+		model.addAttribute("page", page);
 		return "index";
 	}
 	
