@@ -26,6 +26,9 @@ public interface BoardMapper {
 	@Select("SELECT board_IDX FROM board ORDER BY board_IDX DESC LIMIT 1")
     String getWritePostIDX();
 	
+	@Select("SELECT board_PWD FROM board where board_IDX = #{board_IDX}")
+    String getBoardPWD(@Param("board_IDX") Integer board_IDX);
+	
 	
 	@Update("UPDATE board SET board_PWD = #{boardModel.board_PWD},"
 			+ "board_TITLE = #{boardModel.board_TITLE},"

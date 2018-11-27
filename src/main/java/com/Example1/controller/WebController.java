@@ -1,6 +1,5 @@
 package com.Example1.controller;
 
-import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.RequestDispatcher;
@@ -97,10 +96,18 @@ public class WebController implements ErrorController{
 	}
 	
 	
-	@DeleteMapping("/Board/{board_IDX}")
+	@DeleteMapping("/Board/{board_IDX}/{board_PWD}")
 	public @ResponseBody Boolean postDelete(Model model,
-			@PathVariable(required = true, value = "board_IDX") Integer board_IDX) {
-		Boolean board_DLT = boardMapper.postDelete(board_IDX);
+											@PathVariable(required = true, value = "board_IDX") Integer board_IDX,
+											@PathVariable(required = true, value = "board_PWD") String board_PWD) {
+		
+		Boolean board_DLT = false;
+		String real_PWD = boardMapper.getBoardPWD(board_IDX);
+		
+		if(real_PWD.equals(board_PWD)) {
+			board_DLT = boardMapper.postDelete(board_IDX);
+		} 
+		
 		return board_DLT;
 	}
 	

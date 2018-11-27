@@ -24,9 +24,14 @@ textarea {
 	resize: none;
 }
 
-#success, #cancle {
+#success {
 	display: none;
 }
+
+#cancle {
+	display: none;
+}
+
 </style>
 </head>
 <body>
@@ -51,16 +56,36 @@ textarea {
 			</div>
 
 			<div class="form-group pull-right">
+				<a href="/Write" id="write" class="btn btn-outline-dark">게시글 작성</a>
 				<a href="#" id="modify" class="btn btn-outline-success">수정</a>
-				<button type="submit" class="btn btn-outline-success">확인</button>
-				<a href="#" id="cancle" class="btn btn-outline-dark">취소</a>
-				<a href="#" id="delete" class="btn btn-outline-warning">삭제</a>
+				<button id="success" type="submit" class="btn btn-outline-success">확인</button>
+				<a href="#" id="cancle" class="btn btn-outline-warning">취소</a>
+				<a href="#" id="delete" class="btn btn-outline-danger" data-toggle="modal" data-target="#deleteModal">삭제</a>
 				<a href="/" class="btn btn-outline-dark">목록</a>
 			</div>
 		</form:form>
 	</div>
 	
-	
+	<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title text-danger" id="myModalLabel">삭제 하시겠습니까?</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<h5>패스워드를 입력하세요.</h5>
+					<input type="password" id="input_PWD">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" id="delete_BTN">확인</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	
 	<script>
 		$(document).ready(function() {
@@ -85,9 +110,10 @@ textarea {
 			});
 			
 			
-			var url = '/Board/' + ${boardModel.board_IDX};
+			var url = '/Board/' + ${boardModel.board_IDX} + '/';
 			$(document).ready(function(){
-				$('#delete').on('click',function(){
+				$('#delete_BTN').on('click',function(){
+					url += $('#input_PWD').val();
 					$.ajax({
 						url:url,
 						type:'delete',
