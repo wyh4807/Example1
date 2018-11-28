@@ -112,7 +112,7 @@ public class WebController implements ErrorController{
 
 		String real_PWD = boardMapper.getBoardPWD(board_IDX);
 		
-		return new Boolean(boardMapper.postDelete(board_IDX));
+		return real_PWD.equals(board_PWD) ? new Boolean(boardMapper.postDelete(board_IDX)) : false;
 	}
 	
 	@RequestMapping("/error")
