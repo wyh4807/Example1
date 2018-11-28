@@ -57,7 +57,7 @@ textarea {
 
 			<div class="form-group pull-right">
 				<a href="/Write" id="write" class="btn btn-outline-dark">게시글 작성</a>
-				<a href="#" id="modify" class="btn btn-outline-success">수정</a>
+				<a href="#" id="modify" class="btn btn-outline-success" data-toggle="modal" data-target="#modifyModal">수정</a>
 				<button id="success" type="submit" class="btn btn-outline-success">확인</button>
 				<a href="#" id="cancle" class="btn btn-outline-warning">취소</a>
 				<a href="#" id="delete" class="btn btn-outline-danger" data-toggle="modal" data-target="#deleteModal">삭제</a>
@@ -87,18 +87,29 @@ textarea {
 		</div>
 	</div>
 	
+	<div class="modal fade" id="modifyModal" tabindex="-1" role="dialog" aria-labelledby="modifyModal" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title text-danger" id="modifyModalLabel">수정 하시겠습니까?</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<h5>패스워드를 입력하세요.</h5>
+					<input type="password" id="modify_PWD">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" id="modify_BTN">확인</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 	<script>
 		$(document).ready(function() {
-			$("#modify").on('click', function() {
-				$("#board_TITLE").removeAttr('disabled');
-				$("#board_PWD").removeAttr('disabled');
-				$("#board_CONTENT").removeAttr('disabled');	
-				$("#success").css('display', 'inline');
-				$("#cancle").css('display', 'inline');
-				$("#modify").css('display', 'none');
-				$("#delete").css('display', 'none');			
-			});
-			
 			$("#cancle").on('click', function() {
 				$("#board_TITLE").attr('disabled', 'disabled');
 				$("#board_PWD").attr('disabled', 'disabled');
@@ -111,21 +122,52 @@ textarea {
 			
 			
 			var url = '/Board/' + ${boardModel.board_IDX} + '/';
-			$(document).ready(function(){
-				$('#delete_BTN').on('click',function(){
-					url += $('#input_PWD').val();
-					$.ajax({
-						url:url,
-						type:'delete',
-						success:function(data){
-							if(data) location.href = '/';
-							else alert("error");
-						},
-						error:function(xhr,status,error){
-							alert("server error");
-							location.href = '/';
-						}
-					})
+			$('#delete').on('click', function() {
+				$('#input_PWD').val('');
+			});
+			
+			$('#delete_BTN').on('click',function(){
+				url += $('#input_PWD').val();
+				$.ajax({
+					url:url,
+					type:'delete',
+					success:function(data){
+						if(data) location.href = '/';
+						else alert("error");
+					},
+					error:function(xhr,status,error){
+						alert("server error");
+						location.href = '/';
+					}
+				})
+			});
+			
+			var modifyUrl = '/Modify/' + ${boardModel.board_IDX} + '/';
+			$('#modify').on('click', function() {
+				$('#modify_PWD').val('');
+			});
+			
+			$('#modify_BTN').on('click', function(){
+				modifyUrl += $('#modify_PWD').val();
+				$.ajax({
+					url : modifyUrl,
+					type : 'post',
+					success : function(data) {
+						if (data) {
+							$("#board_TITLE").removeAttr('disabled');
+							$("#board_PWD").removeAttr('disabled');
+							$("#board_CONTENT").removeAttr('disabled');	
+							$("#success").css('display', 'inline');
+							$("#cancle").css('display', 'inline');
+							$("#modify").css('display', 'none');
+							$("#delete").css('display', 'none');
+							$('#modifyModal').modal('toggle');
+						} else
+							alert("잘못된 패스워드입니다.");
+					},
+					error : function(xhr, status, error) {
+						alert("서버 에러\n잠시후 다시 시도해주세요.");
+					}
 				});
 			});
 		});

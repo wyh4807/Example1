@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <c:url var="firstUrl" value="1" />
-<c:url var="lastUrl" value="${page.totalPages}" />
+<fmt:formatNumber value="${page.totalPages}" type="number" var="lastUrl" />
 <c:url var="prevUrl" value="${current - 1}" />
 <c:url var="nextUrl" value="${current + 1}" />
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,8 +49,11 @@
 							<th class="col-sm-1"><input type="checkbox" class="checkthis" /></th>
 							<td class="text-center col-sm-2"><a href="/Board/${list.board_IDX}" class="idx">${list.board_IDX}</a></td>
 							<td class="col-sm-7"><a href="/Board/${list.board_IDX}">${list.board_TITLE}</a></td>
-							<td class="col-sm-1"><a href="/Board/${list.board_IDX}" class="btn btn-outline-primary" title="게시글 수정"> <i class="fa fa-pencil" aria-hidden="true"></i>
-							</a></td>
+							<td class="col-sm-1">
+								<a href="/Board/${list.board_IDX}" class="modify btn btn-outline-primary" title="게시글 수정">
+									<i class="fa fa-pencil" aria-hidden="true"></i>
+								</a>
+							</td>
 							<td class="col-sm-1">
 								<a href="#" class="delete btn btn-outline-danger" title="게시글 삭제" data-toggle="modal" data-target="#deleteModal">
 									<i class="fa fa-trash-o" aria-hidden="true"></i>
@@ -103,7 +106,7 @@
 
 
 			<c:choose>
-				<c:when test="${current == lastUrl || current == 1}">
+				<c:when test="${current == lastUrl}">
 					<li class="page-item disabled"><a class="page-link" href="#"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
 					<li class="page-item disabled"><a class="page-link" href="#"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a></li>
 				</c:when>
@@ -120,14 +123,14 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title text-danger" id="myModalLabel">삭제 하시겠습니까?</h4>
+					<h4 class="modal-title text-danger" id="deleteModalLabel">삭제 하시겠습니까?</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
 				<div class="modal-body">
 					<h5>패스워드를 입력하세요.</h5>
-					<input type="password" id="input_PWD">
+					<input type="password" id="delete_PWD">
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-primary" id="delete_BTN">확인</button>
@@ -157,14 +160,14 @@
 			});
 
 			$('.delete').on('click', function() {
-				$('#input_PWD').val('');
-				var idx = $(".delete").index(this) + 1;
+				$('#delete_PWD').val('');
+				var idx = $(".delete").index(this);
 				var text = $('.idx').eq(idx).text();
-				url = '/Board/' + idx + '/';
+				url = '/Board/' + text + '/';
 			});
 			
 			$('#delete_BTN').on('click', function(){
-				url += $('#input_PWD').val();
+				url += $('#delete_PWD').val();
 				$.ajax({
 					url : url,
 					type : 'delete',
@@ -180,7 +183,6 @@
 					}
 				});
 			});
-
 		});
 	</script>
 

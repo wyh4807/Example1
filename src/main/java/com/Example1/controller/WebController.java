@@ -43,7 +43,7 @@ public class WebController implements ErrorController{
 	@RequestMapping("/")
 	public String index(Pageable pageable, Model model){
 		Page<BoardModel> page = boardServiceImpl.findAll(pageable);
-		int current = page.getNumber() + 1;
+		int current = (page.getNumber() == 0) ? 1 : page.getNumber() + 1;
 	    int begin = Math.max(1, current - 5);
 	    int end = Math.min(begin + 10, page.getTotalPages());
 	    
@@ -51,8 +51,6 @@ public class WebController implements ErrorController{
 		model.addAttribute("begin", begin);
 		model.addAttribute("end", end);
 		model.addAttribute("page", page);
-		
-		logger.info(page.toString());
 		return "index";
 	}
 	
@@ -84,6 +82,16 @@ public class WebController implements ErrorController{
 
 	}
 	
+	@RequestMapping("/Modify/{board_IDX}/{board_PWD}")
+	public @ResponseBody Boolean board_PWDCheck(
+			@PathVariable(required = true, value = "board_IDX") Integer board_IDX,
+			@PathVariable(required = true, value = "board_PWD") String board_PWD) {
+		
+		String real_PWD = boardMapper.getBoardPWD(board_IDX);
+		return new Boolean(real_PWD.equals(board_PWD));
+	}
+	
+	
 	@Transactional	
 	@PutMapping("/Write")
 	public RedirectView postModify(@ModelAttribute BoardModel boardModel, Model model) {
@@ -101,14 +109,10 @@ public class WebController implements ErrorController{
 											@PathVariable(required = true, value = "board_IDX") Integer board_IDX,
 											@PathVariable(required = true, value = "board_PWD") String board_PWD) {
 		
-		Boolean board_DLT = false;
+
 		String real_PWD = boardMapper.getBoardPWD(board_IDX);
 		
-		if(real_PWD.equals(board_PWD)) {
-			board_DLT = boardMapper.postDelete(board_IDX);
-		} 
-		
-		return board_DLT;
+		return new Boolean(boardMapper.postDelete(board_IDX));
 	}
 	
 	@RequestMapping("/error")
