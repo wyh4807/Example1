@@ -176,6 +176,7 @@
 							location.href = '/';
 						else
 							alert("잘못된 패스워드입니다.");
+							url = url.replace($('#delete_PWD').val(), "");
 					},
 					error : function(xhr, status, error) {
 						alert("server error");

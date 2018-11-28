@@ -108,7 +108,6 @@ public class WebController implements ErrorController{
 	public @ResponseBody Boolean postDelete(Model model,
 											@PathVariable(required = true, value = "board_IDX") Integer board_IDX,
 											@PathVariable(required = true, value = "board_PWD") String board_PWD) {
-		
 
 		String real_PWD = boardMapper.getBoardPWD(board_IDX);
 		

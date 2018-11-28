@@ -133,7 +133,10 @@ textarea {
 					type:'delete',
 					success:function(data){
 						if(data) location.href = '/';
-						else alert("error");
+						else {
+							alert("잘못된 패스워드입니다.");
+							url = url.replace($('#input_PWD').val(), "");
+						}
 					},
 					error:function(xhr,status,error){
 						alert("server error");
@@ -162,8 +165,10 @@ textarea {
 							$("#modify").css('display', 'none');
 							$("#delete").css('display', 'none');
 							$('#modifyModal').modal('toggle');
-						} else
+						} else {
 							alert("잘못된 패스워드입니다.");
+							modifyUrl = modifyUrl.replace($('#modify_PWD').val(), "");
+						}
 					},
 					error : function(xhr, status, error) {
 						alert("서버 에러\n잠시후 다시 시도해주세요.");
